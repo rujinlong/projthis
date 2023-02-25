@@ -9,7 +9,7 @@ proj_use_description(fields = list(), update_deps = TRUE)
 \arguments{
 \item{fields}{A named list of fields to add to \code{DESCRIPTION}, potentially
 overriding default values. See \code{\link[usethis:use_description]{use_description()}} for how you can set
-personalized defaults using package options}
+personalized defaults using package options.}
 
 \item{update_deps}{\code{logical} indicates to update package-dependency
 declaration in \code{DESCRIPTION} file.}

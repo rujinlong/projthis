@@ -45,12 +45,16 @@ from inside this workflow directory.
 \item It creates a dedicated data-directory for this file to write to, making sure
 that this data-directory is empty at the start of the rendering. It also
 provides an accessor function \code{path_target()} that you can use later in the
-file to compose paths to this data-directory. For example:\preformatted{write.csv(mtcars, path_target("mtcars.csv"))
-}
+file to compose paths to this data-directory. For example:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{write.csv(mtcars, path_target("mtcars.csv"))
+}\if{html}{\out{</div>}}
 
 It also provides an accessor function to the data directory itself, which can
-be useful for reading data from "previous" files.\preformatted{fun_data <- read.csv(path_data("00-import", "fun_data.csv"))
-}
+be useful for reading data from "previous" files.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{fun_data <- read.csv(path_data("00-import", "fun_data.csv"))
+}\if{html}{\out{</div>}}
 }
 
 These opinionated features can help you access your data more easily, while

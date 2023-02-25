@@ -172,6 +172,60 @@ proj_workflow_use_rmd <- function(name, path_proj = NULL,
   invisible(NULL)
 }
 
+
+#' Use opinionated qmd template
+#'
+#' @inheritParams proj_use_workflow
+#' @param name `character` name of the workflow component.
+#' @param ignore `logical` indicates to add this file to `.Rbuildignore`.
+#'
+#' @return Invisible `NULL`, called for side effects.
+#'
+#' @examples
+#' # not run because it creates side effects
+#' \dontrun{
+#'   # creates file `01-clean.qmd`
+#'   proj_workflow_use_rmd("01-clean")
+#' }
+#' @export
+#'
+proj_workflow_use_qmd <- function(name, path_proj = NULL,
+                                  open = rlang::is_interactive(),
+                                  ignore = FALSE) {
+
+  # ensure that we are not using a subdirectory
+  assertthat::assert_that(
+    identical(name, basename(name)),
+    msg = "you cannot specify a sub-directory to `path_proj`"
+  )
+
+  # determine path_workflow
+  # - if NULL use the path of an open Rmd file
+  # - otherwise error
+  path_proj <- path_proj %||% get_rmd_path()
+
+  # is path_proj still NULL?
+  if (is.null(path_proj)) {
+    usethis::ui_stop("must provide `path_proj` explicitly")
+  }
+
+  name <- tools::file_path_sans_ext(name)
+  filename <- glue::glue("{name}.qmd")
+  uuid <- uuid::UUIDgenerate()
+
+  usethis::use_template(
+    "workflow.qmd",
+    save_as = fs::path(path_proj, filename),
+    data = list(name = name, uuid = uuid),
+    ignore = ignore,
+    open = open,
+    package = "projthis"
+  )
+
+  invisible(NULL)
+}
+
+
 #' Render workflow
 #'
 #' In the absence of a `_projthis.yml` file, this renders each of the `.Rmd`

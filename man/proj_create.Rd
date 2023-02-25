@@ -31,7 +31,7 @@ that the directory can be recognized as a project by the
 
 \item{fields}{A named list of fields to add to \code{DESCRIPTION}, potentially
 overriding default values. See \code{\link[usethis:use_description]{use_description()}} for how you can set
-personalized defaults using package options}
+personalized defaults using package options.}
 }
 \value{
 Invisible \code{NULL}, called for side effects.

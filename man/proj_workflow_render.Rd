@@ -30,12 +30,14 @@ order is important because it preserves the direction of the data
 dependencies.
 }
 \details{
-A \verb{_projthis.yml} file might look something like this:\preformatted{render:
+A \verb{_projthis.yml} file might look something like this:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{render:
   first:
     00-import.Rmd
   last:
     99-publish.Rmd
-}
+}\if{html}{\out{</div>}}
 
 If the workflow directory has a \verb{_projthis.yml} file:
 \itemize{

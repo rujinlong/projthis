@@ -18,11 +18,13 @@ Looks for a file named \verb{_projthis.yml} in \code{path_proj}. If present, rea
 using \code{\link[yaml:read_yaml]{yaml::read_yaml()}}; if not present, returns \code{NULL}.
 }
 \details{
-The configuration supports a single element, \code{render}.\preformatted{render:
+The configuration supports a single element, \code{render}.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{render:
   first:
     00-import.Rmd
   last:
     99-publish.Rmd
-}
+}\if{html}{\out{</div>}}
 }
 \keyword{internal}

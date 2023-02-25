@@ -12,10 +12,19 @@ proj_workflow_use_action(
 )
 }
 \arguments{
-\item{name}{Name of the workflow file, with or without a \code{.yaml} extension.}
+\item{name}{For \code{use_github_action()}: Name of one of the example workflows
+from \url{https://github.com/r-lib/actions/tree/v2/examples}. Examples:
+"pkgdown", "check-standard.yaml".
 
-\item{save_as}{Name of the workflow file. Defaults to \code{fs::path_file(url)}
-for \code{use_github_action()}.}
+For \code{use_github_actions_badge()}: Name of the workflow's YAML configuration
+file. Examples: "R-CMD-check", "R-CMD-check.yaml".
+
+If \code{name} has no extension, we assume it's \code{.yaml}.}
+
+\item{save_as}{Name of the local workflow file. Defaults to \code{name} or
+\code{fs::path_file(url)} for \code{use_github_action()}. Do not specify any other
+part of the path; the parent directory will always be \code{.github/workflows},
+within the active project.}
 
 \item{ignore}{Should the newly created file be added to \code{.Rbuildignore}?}
 
@@ -27,7 +36,7 @@ Invisible \code{NULL}, called for side effects.
 }
 \description{
 You can use a GitHub Action to automate the building and deployment of your
-project. This function wraps \code{\link[usethis:use_github_action]{usethis::use_github_action()}}  to install an
+project. This function wraps \code{\link[usethis:github_actions]{usethis::use_github_action()}}  to install an
 Actions file that will:
 \itemize{
 \item install R
