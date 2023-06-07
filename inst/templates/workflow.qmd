@@ -4,15 +4,32 @@ title-block-banner: true
 author:
   - name: xxx
     orcid: xxx
+date: 2022-11-06
 toc: true
-format: gfm
+toc-depth: 4
+number-sections: true
+code-fold: true
+code-line-numbers: true
+code-tools: true
+format: 
+  html:
+    embed-resources: true
+    smooth-scroll: true
+    page-layout: article
+    theme: 
+      light: flatly
+      dark: darkly
+reference-location: margin
+citation-location: margin
 bibliography: refs.bib
+cls: bioinformatics.csl
 params:
   name: "{{{name}}}"
 ---
 
-Updated: `r format(Sys.time(), '%Y-%m-%d %H:%M:%S', tz = 'CET')` CET.
+**Updated: `r format(Sys.time(), '%Y-%m-%d %H:%M:%S', tz = 'CET')` CET.**
 
+The purpose of this document is ...
 
 ```{r setup}
 #| message: false
@@ -21,14 +38,15 @@ here::i_am(paste0(params$name, ".qmd"), uuid = "{{{uuid}}}")
 projthis::proj_create_dir_target(params$name, clean = FALSE)
 path_target <- projthis::proj_path_target(params$name)
 path_source <- projthis::proj_path_source(params$name)
-path_data <- path_source("00-raw", params$name)
-dir.create(path_data, recursive = T)
+path_raw <- path_source("00-raw")
+dir.create(path_raw, recursive = T)
+path_data <- here(path_raw, params$name)
+# dir.create(path_data, recursive = T)
 ```
-
-The purpose of this document is ...
 
 ```{r packages}
 library(here)
+library(conflicted)
 ```
 
 ## Tasks
