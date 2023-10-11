@@ -35,7 +35,7 @@ path_target <- projthis::proj_path_target(params$name)
 path_source <- projthis::proj_path_source(params$name)
 path_raw <- path_source("00-raw")
 dir.create(path_raw, recursive = T)
-path_data <- here::here(path_raw, past0("r", params$name))
+path_data <- here::here(path_raw, paste0("r", params$name))
 dir.create(path_data, recursive = T)
 ```
 
