@@ -15,7 +15,7 @@ format:
   html:
     embed-resources: true
     smooth-scroll: true
-    page-layout: article
+    page-layout: full
 reference-location: section
 citation-location: document
 params:
@@ -29,22 +29,25 @@ The purpose of this document is ...
 ```{r setup}
 #| message: false
 #| include: false
+#| warning: false
+setwd(here::here("{{{path_proj}}}"))
+params <- list(name = "{{{name}}}")
 here::i_am(paste0(params$name, ".qmd"), uuid = "{{{uuid}}}")
 projthis::proj_create_dir_target(params$name, clean = FALSE)
 path_target <- projthis::proj_path_target(params$name)
 path_source <- projthis::proj_path_source(params$name)
 path_raw <- path_source("00-raw")
-dir.create(path_raw, recursive = T)
 path_data <- here::here(path_raw, paste0("d", params$name))
-dir.create(path_data, recursive = T)
+dir.create(path_raw, recursive = TRUE, showWarnings = FALSE)
+dir.create(path_data, recursive = TRUE, showWarnings = FALSE)
 ```
 
 ```{r packages}
 #| message: false
 suppressPackageStartupMessages({
-    library(here)
-    library(conflicted)
-    library(tidyverse)
+  library(here)
+  library(conflicted)
+  library(tidyverse)
 })
 ```
 
@@ -54,7 +57,7 @@ The first task is ...
 
 ## Files written
 
-These files have been written to the target directory, ```r paste0("data/", params$name)```:
+These files have been written to the target directory, `r paste0("data/", params$name)`:
 
 ```{r list-files-target}
 projthis::proj_dir_info(path_target(), tz = "CET")

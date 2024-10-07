@@ -185,11 +185,11 @@ proj_workflow_use_rmd <- function(name, path_proj = NULL,
 #' # not run because it creates side effects
 #' \dontrun{
 #'   # creates file `01-clean.qmd`
-#'   proj_workflow_use_rmd("01-clean")
+#'   use_qmd("01-clean")
 #' }
 #' @export
 #'
-proj_workflow_use_qmd <- function(name, path_proj = NULL,
+use_qmd <- function(name, path_proj = NULL,
                                   open = rlang::is_interactive(),
                                   ignore = FALSE) {
 
@@ -216,7 +216,7 @@ proj_workflow_use_qmd <- function(name, path_proj = NULL,
   usethis::use_template(
     "workflow.qmd",
     save_as = fs::path(path_proj, filename),
-    data = list(name = name, uuid = uuid),
+    data = list(name = name, uuid = uuid, path_proj = path_proj),
     ignore = ignore,
     open = open,
     package = "projthis"
