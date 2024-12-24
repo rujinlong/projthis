@@ -30,7 +30,10 @@ The purpose of this document is ...
 #| message: false
 #| include: false
 #| warning: false
-setwd(here::here("{{{path_proj}}}"))
+wd <- "{{{path_proj}}}"
+if (basename(getwd()) != wd) {
+  setwd(here::here(wd))
+}
 params <- list(name = "{{{name}}}")
 here::i_am(paste0(params$name, ".qmd"), uuid = "{{{uuid}}}")
 projthis::proj_create_dir_target(params$name, clean = FALSE)
