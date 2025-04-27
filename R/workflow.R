@@ -189,7 +189,7 @@ proj_workflow_use_rmd <- function(name, path_proj = NULL,
 #' }
 #' @export
 #'
-use_qmd <- function(name, path_proj = NULL,
+use_qmd <- function(name, path_proj = "analyses",
                                   open = rlang::is_interactive(),
                                   ignore = FALSE) {
 
@@ -236,7 +236,7 @@ use_qmd <- function(name, path_proj = NULL,
 #'
 #' @export
 #'
-use_dashboard <- function(name, path_proj = NULL,
+use_dashboard <- function(name, path_proj = "analyses",
                           open = rlang::is_interactive(),
                           ignore = FALSE) {
   # ensure that we are not using a subdirectory
