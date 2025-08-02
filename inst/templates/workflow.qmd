@@ -68,7 +68,8 @@ The first task is ...
 
 These files have been written to the target directory, `r paste0("data/", params$name)`:
 
-```{r list-files-target}
+```{r}
+#| label: list-files-target
 projthis::proj_dir_info(path_target(), tz = "CET")
 ```
 
