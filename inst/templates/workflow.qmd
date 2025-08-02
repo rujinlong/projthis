@@ -4,7 +4,7 @@ title-block-banner: true
 author:
   - name: Jinlong Ru
     orcid: 0000-0002-6757-6018
-date: 2025-04-28
+date: "{{{date}}}"
 toc: true
 toc-depth: 4
 number-sections: true
@@ -26,7 +26,8 @@ params:
 
 The purpose of this document is ...
 
-```{r setup}
+```{r}
+#| label: setup
 #| message: false
 #| include: false
 #| warning: false
@@ -47,7 +48,8 @@ dir.create(path_data, recursive = TRUE, showWarnings = FALSE)
 dir.create(path_resource, recursive = TRUE, showWarnings = FALSE)
 ```
 
-```{r packages}
+```{r}
+#| label: packages
 #| message: false
 suppressPackageStartupMessages({
   library(here)
