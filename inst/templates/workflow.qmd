@@ -4,7 +4,7 @@ title-block-banner: true
 author:
   - name: Jinlong Ru
     orcid: 0000-0002-6757-6018
-date: "{{{date}}}"
+date: 2025-08-02
 toc: true
 toc-depth: 4
 number-sections: true
