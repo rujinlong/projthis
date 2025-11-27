@@ -67,8 +67,19 @@ proj_use_workflow <- function(path_proj = "workflow", git_ignore_data = TRUE,
 
   # create data directory, add to .gitignore if indicated
   usethis::use_directory(fs::path(path_proj, "data"))
+  # create the README to ensure there is something to track
+  usethis::write_over(fs::path(path_proj, "data", "README.md"), "# Data Directory\n\nData in this folder is ignored by git.")
+
   if (git_ignore_data) {
-    usethis::use_git_ignore(fs::path(path_proj, "data"))
+    # Define the rules
+    ignores <- c(
+      paste0(path_proj, "/data/*"),          # Ignore contents
+      paste0("!", path_proj, "/data/README.md") # Keep README
+      paste0("!", path_proj, "/data/*manuscript.qmd") # Keep manuscript
+    )
+    
+    # Write to .gitignore
+    usethis::write_union(usethis::proj_path(".gitignore"), ignores)
   }
 
   # bring in index.Rmd
