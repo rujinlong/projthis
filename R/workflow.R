@@ -73,9 +73,9 @@ proj_use_workflow <- function(path_proj = "workflow", git_ignore_data = TRUE,
   if (git_ignore_data) {
     # Define the rules
     ignores <- c(
-      paste0(path_proj, "/data/*"),          # Ignore contents
-      paste0(path_proj, "/tmp/"),            # Ignore the tmp directory
-      paste0("!", path_proj, "/data/README.md") # Keep README
+      paste0(path_proj, "/data/*"),              # Ignore contents
+      paste0(path_proj, "/tmp/"),                # Ignore the tmp directory
+      paste0("!", path_proj, "/data/README.md"), # Keep README
       paste0("!", path_proj, "/data/*manuscript.qmd") # Keep manuscript
     )
     
