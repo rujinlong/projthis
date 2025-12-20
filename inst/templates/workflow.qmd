@@ -4,7 +4,7 @@ title-block-banner: true
 author:
   - name: Jinlong Ru
     orcid: 0000-0002-6757-6018
-date: 2025-08-02
+date: 2025-12-20
 toc: true
 toc-depth: 4
 number-sections: true
@@ -67,7 +67,36 @@ suppressPackageStartupMessages({
 
 ## Tasks
 
-The first task is ...
+This section is designated for your workflow implementation. **Please write all your analysis and processing code here.**
+
+Maintaining your code within this section ensures a clean project structure and facilitates reproducibility. We recommend organizing your workflow into modular tasks—such as data cleaning, analysis, and visualization—using distinct code chunks.
+
+Below is an example structure to get you started:
+
+### Task 1: Data Cleaning
+
+```{r}
+#| label: data-cleaning
+
+# Your data cleaning code here
+```
+
+### Task 2: Data Analysis
+
+```{r}
+#| label: data-analysis
+
+# Your analysis code here
+```
+
+### Task 3: Data Visualization
+
+```{r}
+#| label: data-visualization
+
+# Your visualization code here
+```
+
 
 ## Files written
 
