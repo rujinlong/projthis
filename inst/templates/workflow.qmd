@@ -27,6 +27,12 @@ params:
 The purpose of this document is ...
 
 ```{r}
+#| eval: !expr interactive()
+#| include: false
+params = list(name = "00-tmp")
+```
+
+```{r}
 #| label: setup
 #| message: false
 #| include: false
@@ -69,6 +75,7 @@ These files have been written to the target directory, `r paste0("data/", params
 
 ```{r}
 #| label: list-files-target
+#| include: false
 projthis::proj_dir_info(path_target(), tz = "CET")
 ```
 
