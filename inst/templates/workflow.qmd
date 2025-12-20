@@ -27,6 +27,7 @@ params:
 The purpose of this document is ...
 
 ```{r}
+#| label: params
 #| eval: !expr interactive()
 #| include: false
 params = list(name = "{{{name}}}")
