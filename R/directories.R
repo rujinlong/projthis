@@ -34,7 +34,7 @@
 proj_create_dir_target <- function(name, clean = TRUE) {
 
   dir_target <- here::here("data", name)
-  dir_tmp <- here::here("tmp", name)
+  dir_tmp <- here::here("tmp", paste0("t", name))
 
   # if target directory exists and we specify to clean, delete it
   if (fs::dir_exists(dir_target) && clean) {
