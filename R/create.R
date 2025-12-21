@@ -32,6 +32,8 @@ proj_create <- function(path, rstudio = rstudioapi::isAvailable(),
 
   # add namespace file
   usethis::use_namespace(roxygen = TRUE)
+  usethis::use_readme_md()
+  usethis::use_gpl3_license()
 
   # give feedback
   code <- usethis::ui_code("proj_update_deps()")

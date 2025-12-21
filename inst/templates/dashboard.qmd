@@ -5,7 +5,15 @@ params:
   name: "{{{name}}}"
 ---
 
-```{r setup}
+```{r}
+#| label: params
+#| eval: !expr interactive()
+#| include: false
+params = list(name = "{{{name}}}")
+```
+
+```{r}
+#| label: setup
 #| message: false
 #| include: false
 #| warning: false
@@ -13,7 +21,6 @@ wd <- "{{{path_proj}}}"
 if (basename(getwd()) != wd) {
   setwd(here::here(wd))
 }
-params <- list(name = "{{{name}}}")
 here::i_am(paste0(params$name, ".qmd"), uuid = "{{{uuid}}}")
 projthis::proj_create_dir_target(params$name, clean = FALSE)
 path_target <- projthis::proj_path_target(params$name)
@@ -26,17 +33,21 @@ dir.create(path_data, recursive = TRUE, showWarnings = FALSE)
 dir.create(path_resource, recursive = TRUE, showWarnings = FALSE)
 ```
 
-```{r packages}
+```{r}
+#| label: packages
 #| message: false
 suppressPackageStartupMessages({
   library(here)
   library(conflicted)
   library(tidyverse)
+  library(data.table)
+  devtools::load_all()
 })
 ```
 
 
-```{r list-files-target}
+```{r}
+#| label: list-files-target
+#| include: false
 projthis::proj_dir_info(path_target(), tz = "CET")
 ```
-
