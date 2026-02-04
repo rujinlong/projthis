@@ -1,7 +1,7 @@
 Package: projthis
 Title: Lightweight Framework for Analysis Development
-Version: 0.0.5
-Authors@R: 
+Version: 0.0.6
+Authors@R:
   c(
     person(given = "Ian J",
            family = "Lyttle",
@@ -13,11 +13,11 @@ Authors@R:
     person("Jim", "Hester", role = "ctb", comment = "actions")
   )
 Description: One of the barriers to making projects portable is dependency
-  management. The goal of this package to provide a lightweight solution, 
+  management. The goal of this package to provide a lightweight solution,
   using the DESCRIPTION file. This is the same mechanism used to manage
-  dependencies for packages; it is subject to the same limitation: the project 
+  dependencies for packages; it is subject to the same limitation: the project
   will run using the latest version of all its dependencies. The functionality
-  of this package lies somewhere between {usethis} and {renv}, hence the 
+  of this package lies somewhere between {usethis} and {renv}, hence the
   thought to create yet another package.
   TODO: talk about the workflow part.
 License: MIT + file LICENSE
@@ -27,7 +27,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 URL: https://github.com/ijlyttle/projthis
 BugReports: https://github.com/ijlyttle/projthis/issues
-Imports: 
+Imports:
     usethis,
     remotes,
     renv,
@@ -49,12 +49,12 @@ Imports:
     utils,
     callr,
     yaml
-Suggests: 
+Suggests:
     testthat,
     pkgdown,
     knitr,
     covr,
     conflicted
 Remotes: r-lib/testthat
-Config/testthat/edition: 3 
+Config/testthat/edition: 3
 VignetteBuilder: knitr

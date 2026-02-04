@@ -1,19 +1,6 @@
 ---
 title: "{{{name}}}"
-author:
-  - name: Jinlong Ru
-    orcid: 0000-0002-6757-6018
-date: 2026-01-26
-toc: true
-toc-depth: 4
-number-sections: true
-code-fold: true
-code-line-numbers: true
-code-tools: true
-format: 
-  gfm: default
-reference-location: section
-citation-location: document
+date: 2026-02-04
 params:
   name: "{{{name}}}"
 ---
@@ -51,6 +38,7 @@ dir.create(path_resource, recursive = TRUE, showWarnings = FALSE)
 ```{r}
 #| label: packages
 #| message: false
+#| warning: false
 suppressPackageStartupMessages({
   library(here)
   library(conflicted)
@@ -72,30 +60,16 @@ Maintaining your code within this section ensures a clean project structure and 
 This is an example structure to get you started. You can modify it as per your needs.
 :::
 
-### Task 1: Data Cleaning
+### Task 1: Data import
 
 ```{r}
-#| label: data-cleaning
+#| label: data-import
+#| cache: true
+#| message: false
+#| warning: false
 
-# Your data cleaning code here
+# Your data improt code here
 ```
-
-### Task 2: Data Analysis
-
-```{r}
-#| label: data-analysis
-
-# Your analysis code here
-```
-
-### Task 3: Data Visualization
-
-```{r}
-#| label: data-visualization
-
-# Your visualization code here
-```
-
 
 ## Files written
 
