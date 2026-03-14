@@ -58,8 +58,38 @@
 
   })
 
-}
+  test_that("proj_create() applies fields and protects existing directories", {
 
+    custom_path <- fs::path(tempdir, "proj-03")
+
+    expect_no_error(
+      proj_create(
+        path = custom_path,
+        fields = list(Title = "Custom Title", Version = "9.9.9")
+      )
+    )
+
+    desc_obj <- desc::description$new(file = fs::path(custom_path, "DESCRIPTION"))
+    expect_identical(desc_obj$get("Title")[[1]], "Custom Title")
+    expect_identical(desc_obj$get("Version")[[1]], "9.9.9")
+
+    occupied <- fs::path(tempdir, "proj-occupied")
+    fs::dir_create(occupied)
+    fs::file_create(fs::path(occupied, "existing.txt"))
+
+    expect_error(
+      proj_create(path = occupied),
+      "already exists and is not empty"
+    )
+
+    expect_error(
+      proj_create(fs::path(tempdir, "proj-04"), fields = list("not_named")),
+      "`fields` must be a named list"
+    )
+
+  })
+
+}
 
 
 
