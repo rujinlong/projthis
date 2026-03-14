@@ -4,22 +4,19 @@
   withr::local_options(list(usethis.quiet = TRUE))
   if (interactive()) usethis::local_project()
   tempdir <-
-    withr::local_tempdir(tmpdir = fs::path(tempdir(), "projthis-description"))
+    withr::local_tempdir(tmpdir = fs::path(tempdir(), "qproj-directories"))
 
   { # create scope for tests
 
     # create project for tests
     projdir <- fs::path(tempdir, "proj-01")
-    withr::with_options(
-      list(projthis.quiet = TRUE),
-      proj_create(path = projdir) # this is tested elsewhere
-    )
+    proj_create(path = projdir)
 
     # change to project directory
     usethis::local_project(projdir)
 
     # create workflow
-    name_workflow <- "workflow"
+    name_workflow <- "analyses"
     suppressMessages(
       proj_use_workflow(name_workflow)
     )
@@ -28,15 +25,15 @@
     workdir <- fs::path(projdir, name_workflow)
     withr::local_dir(workdir)
 
-    # create Rmd file
+    # create qmd file (creates the file but we set up here manually)
     name_rmd <- "01-clean"
     suppressMessages(
-      proj_workflow_use_rmd(name_rmd, path = name_workflow)
+      use_qmd(name_rmd, path_proj = name_workflow, open = FALSE)
     )
 
     # establish here
     suppressMessages(
-      here::i_am(glue::glue("{name_rmd}.Rmd"))
+      here::i_am(glue::glue("{name_rmd}.qmd"))
     )
 
     is_dir_empty <- function(path) {

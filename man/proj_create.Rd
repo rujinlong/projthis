@@ -4,44 +4,23 @@
 \alias{proj_create}
 \title{Create project}
 \usage{
-proj_create(
-  path,
-  rstudio = rstudioapi::isAvailable(),
-  open = rlang::is_interactive(),
-  fields = list()
-)
+proj_create(path, fields = list())
 }
 \arguments{
-\item{path}{A path. If it exists, it is used. If it does not exist, it is
-created, provided that the parent path exists.}
+\item{path}{\code{character} path to the new project directory.}
 
-\item{rstudio}{If \code{TRUE}, calls \code{\link[usethis:use_rstudio]{use_rstudio()}} to make the new package or
-project into an \href{https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects}{RStudio Project}.
-If \code{FALSE} and a non-package project, a sentinel \code{.here} file is placed so
-that the directory can be recognized as a project by the
-\href{https://here.r-lib.org}{here} or
-\href{https://rprojroot.r-lib.org}{rprojroot} packages.}
-
-\item{open}{If \code{TRUE}, \link[usethis:proj_activate]{activates} the new project:
-\itemize{
-\item If RStudio desktop, the package is opened in a new session.
-\item If on RStudio server, the current RStudio project is activated.
-\item Otherwise, the working directory and active project is changed.
-}}
-
-\item{fields}{A named list of fields to add to \code{DESCRIPTION}, potentially
-overriding default values. See \code{\link[usethis:use_description]{use_description()}} for how you can set
-personalized defaults using package options.}
+\item{fields}{\code{list} of additional fields to set in \code{DESCRIPTION}.}
 }
 \value{
-Invisible \code{NULL}, called for side effects.
+Invisible \code{character} path to the created project, called for
+side effects.
 }
 \description{
-To create a new project, this function calls \code{\link[usethis:create_package]{usethis::create_project()}},
-then \code{\link[=proj_use_description]{proj_use_description()}} to create a \code{DESCRIPTION} file.
+Creates a new analysis project directory with a \code{DESCRIPTION} file,
+\code{NAMESPACE}, \code{README.md}, and \code{.gitignore}.
 
-The function acts in the same way as \code{usethis::create_project()}; provide
-an absolute \code{path}, or a relative \code{path} from your current working-directory.
+Provide an absolute \code{path}, or a relative \code{path} from your current
+working-directory.
 }
 \examples{
 # not run because it produces side effects

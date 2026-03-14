@@ -1,4 +1,4 @@
 library(testthat)
-library(projthis)
+library(qproj)
 
-test_check("projthis")
+test_check("qproj")
