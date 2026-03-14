@@ -1,92 +1,66 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# projthis
+# qproj
 
-<!-- badges: start -->
+qproj is a lightweight framework for Quarto-based analysis workflows.
+It helps you:
 
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![R build
-status](https://github.com/ijlyttle/projthis/workflows/R-CMD-check/badge.svg)](https://github.com/ijlyttle/projthis/actions)
-[![Codecov test
-coverage](https://codecov.io/gh/ijlyttle/projthis/branch/master/graph/badge.svg)](https://codecov.io/gh/ijlyttle/projthis?branch=master)
-
-<!-- badges: end -->
-
-The projthis package offers a framework for analysis-based project
-workflows. You can use it to:
-
--   manage the dependencies among files in your workflows; projthis
-    provides tools to support a directory structure and a naming
-    convention.
-
--   manage your project’s package-dependencies; projthis helps you use a
-    `DESCRIPTION` file.
-
--   automate the rendering of your workflow using GitHub Actions;
-    projthis provides a template for an Action.
-
-The [getting-started
-article](https://ijlyttle.github.io/projthis/articles/projthis.html)
-provides a bottom-up treatment of what this package does; for a top-down
-overview, see the [design-philosophy
-article](https://ijlyttle.github.io/projthis/articles/design-phlosophy.html).
-
-To see the projthis framework in action, here’s a [repository that puts
-it to use](https://github.com/ijlyttle/covidStates).
+- keep each `.qmd` file writing to its own data directory with helpers
+  like `proj_create_dir_target()`, `proj_path_target()`, and
+  `proj_path_source()`;
+- create workflow scaffolding with `proj_create()` and
+  `proj_use_workflow()`;
+- manage dependencies declared in `DESCRIPTION` with
+  `proj_check_deps()` and `proj_install_deps()`.
 
 ## Installation
 
-You can install the GitHub version of projthis with:
+Install the development version from GitHub:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("ijlyttle/projthis")
+remotes::install_github("rujinlong/projthis")
 ```
+
+## Create a class-ready repository
+
+If you want to publish a fresh qproj-based repository for students to
+clone, start with these commands in a clean directory:
+
+``` r
+# 1. Create the project scaffold (fills DESCRIPTION/NAMESPACE/README/.gitignore)
+qproj::proj_create("my-class-project", fields = list(Title = "My Class Project"))
+
+setwd("my-class-project")
+
+# 2. Add a workflow directory and a first analysis file
+qproj::proj_use_workflow("analyses")
+qproj::use_qmd("00-import", path_proj = "analyses", open = FALSE)
+
+# 3. Add more steps as needed
+qproj::use_qmd("01-clean", path_proj = "analyses", open = FALSE)
+```
+
+Each `.qmd` created from the template writes to its own
+`analyses/data/<name>` directory and can read from earlier steps via
+`proj_path_source()`.
+
+To share with students:
+
+1. Initialize git and push the project to GitHub (e.g.
+   `usethis::use_git()` then `usethis::use_github()`).
+2. Mark the repository as a template on GitHub.
+3. Students can click **Use this template** or run
+   `usethis::create_from_github("your-org/my-class-project")` to get
+   their own copy. They can immediately edit the `.qmd` files and render
+   them with Quarto.
 
 ## Acknowledgments
 
-There is precious little original to this package, which is a good
-thing. This package rests heavily on the foundation laid by RStudio’s
-[**usethis**](https://usethis.r-lib.org/) package, and also relies on
-their [**renv**](https://rstudio.github.io/renv/),
-[**desc**](https://github.com/r-lib/desc),
-[**remotes**](https://remotes.r-lib.org/), and
-[**actions**](https://github.com/r-lib/actions) packages. Of course, the
-gold-standard for managing dependencies within a workflow is William
-Landau’s [**drake**](https://docs.ropensci.org/drake/), now superseded
-by [**targets**](https://docs.ropensci.org/targets/). For managing
-package-dependencies, you may also be interested in ThinkR’s
-[**attachment**](https://thinkr-open.github.io/attachment/) package.
-
-The idea to put some structure on analysis development in R is not new:
-
--   I learned the term “analysis development” from Hilary Parker, who
-    has published a [pre-print](https://peerj.com/preprints/3210/), and
-    given an [rstudio::conf()
-    presentation](https://rstudio.com/resources/rstudioconf-2017/opinionated-analysis-development/)
-    on the topic.
-
--   Jenny Bryan has long been an advocate for more-humane organization
-    of R workflows. Perhaps her most famous “hot take” is included in
-    this [blog
-    post](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/),
-    which has served as a foundation for this work.
-
--   Sharla Gelfand has discussed her implementation in a [blog
-    post](https://sharla.party/post/usethis-for-reporting/) and an
-    [rstudio::conf()
-    presentation](https://rstudio.com/resources/rstudioconf-2020/don-t-repeat-yourself-talk-to-yourself-repeated-reporting-in-the-r-universe/).
-
--   As well, Emily Reiderer discussed her approach in a [blog
-    post](https://emilyriederer.netlify.app/post/rmarkdown-driven-development/)
-    and an [rstudio::conf()
-    presentation](https://rstudio.com/resources/rstudioconf-2020/rmarkdown-driven-development/).
-
--   Steph Locke and Maëlle Salmon offer the
-    [**starters**](https://itsalocke.com/starters/) package, to help you
-    set up R projects for a variety of use cases.
+This package leans heavily on the foundations laid by the RStudio/Posit
+ecosystem, including **usethis**, **renv**, **desc**, **pak**, and the
+Quarto toolchain.
 
 ## Code of Conduct
 
