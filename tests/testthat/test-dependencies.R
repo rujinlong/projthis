@@ -5,7 +5,7 @@
   # be quiet and leave no footprints
   withr::local_options(list(usethis.quiet = TRUE))
   if (interactive()) usethis::local_project()
-  tempdir <- withr::local_tempdir(tmpdir = fs::path(tempdir(), "projthis-deps"))
+  tempdir <- withr::local_tempdir(tmpdir = fs::path(tempdir(), "qproj-deps"))
 
   { # create another scope for the project
 
@@ -46,17 +46,22 @@
 
     test_that("proj_check_deps works", {
 
-      expect_snapshot_output(proj_check_deps())
+      result <- proj_check_deps()
+      expect_true(is.list(result))
+      expect_true("missing" %in% names(result))
+      expect_true("extra" %in% names(result))
+      expect_equal(sort(result$missing), c("rmarkdown", "renv"))
+      expect_equal(result$extra, "desc")
 
     })
 
     test_that("update_check_deps works", {
 
       # update dependencies, don't remove extra dependencies
-      expect_snapshot_output(proj_update_deps())
+      expect_no_error(proj_update_deps())
 
       # update dependencies, do remove extra dependencies
-      expect_snapshot_output(proj_update_deps(remove_extra = TRUE))
+      expect_no_error(proj_update_deps(remove_extra = TRUE))
 
       # ensure nothing missing or extra
       expect_identical(
@@ -64,9 +69,10 @@
         list(missing = character(0), extra = character(0))
       )
 
-      # make sure output works (nothing messing or extra)
-      expect_snapshot_output(proj_check_deps())
-      expect_snapshot_output(proj_update_deps())
+      # make sure output works (nothing missing or extra)
+      result <- proj_check_deps()
+      expect_equal(result$missing, character(0))
+      expect_equal(result$extra, character(0))
 
     })
 

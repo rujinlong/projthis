@@ -17,9 +17,9 @@ proj_path_source(name)
 returning a \code{character} path.
 }
 \description{
-This workflow philosophy relies on RMarkdown files being run in a defined
-sequence. It follows that an RMarkdown file should not read from the data
-written by another RMarkdown file written \emph{later} in the sequence. These
+This workflow philosophy relies on Quarto files being run in a defined
+sequence. It follows that a Quarto file should not read from the data
+written by another Quarto file written \emph{later} in the sequence. These
 functions help you implement this idea.
 
 These functions are
@@ -28,14 +28,14 @@ they themselves return functions. You can use those returned functions
 to access paths.
 
 To make things a little easier, the template used by
-\code{\link[=proj_workflow_use_rmd]{proj_workflow_use_rmd()}} includes a calls to \code{proj_path_source()}
+\code{\link[=use_qmd]{use_qmd()}} includes calls to \code{proj_path_source()}
 and \code{proj_path_target()}, with the \code{name} argument populated.
 }
 \details{
-Each RMarkdown file in the sequence has its own target directory, created
+Each Quarto file in the sequence has its own target directory, created
 using \code{\link[=proj_create_dir_target]{proj_create_dir_target()}}. Once a target directory is created, use
 these functions to \strong{create functions} to access your target directory,
-or previous RMarkdown files' target directories (as sources).
+or previous Quarto files' target directories (as sources).
 
 For example, use \code{proj_path_target()} to create a path-generating function
 that uses your target directory. Whenever you need to provide a path to a
@@ -44,8 +44,8 @@ file in your target directory, e.g. the \code{file} argument to
 
 Similarly, you can use \code{proj_path_source()} to create a path-generating
 function for your source directories, which \strong{must} be earlier in the
-workflow than your current RMarkdown file. The path-generating function
-ckecks that the source directory is, in fact, earlier in the workflow.
+workflow than your current Quarto file. The path-generating function
+checks that the source directory is, in fact, earlier in the workflow.
 }
 \examples{
   # create path-generating functions

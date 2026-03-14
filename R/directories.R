@@ -1,25 +1,25 @@
 #' Create target directory
 #'
-#' A target directory is dedicated to each RMarkdown file in a workflow.
-#' Call this function from within an RMarkdown file to create its target
+#' A target directory is dedicated to each Quarto file in a workflow.
+#' Call this function from within a Quarto file to create its target
 #' directory. If the directory already exists and `clean` is `TRUE`,
 #' it will be deleted then re-created.
 #'
 #' Following this workflow philosophy, the target directory is the only
-#' directory to which a RMarkdown directory should write. The exception
-#' to this is the *last* RMarkdown file in a workflow sequence, which
+#' directory to which a Quarto file should write. The exception
+#' to this is the *last* Quarto file in a workflow sequence, which
 #' may publish data elsewhere.
 #'
 #' To establish the connection between the two, the target directory
-#' shall be named for the RMarkdown file itself. This is the purpose
+#' shall be named for the Quarto file itself. This is the purpose
 #' of the `name` argument; its value should be the name of the
-#' current workflow component, i.e. the name of the current Rmd file.
+#' current workflow component, i.e. the name of the current `.qmd` file.
 #'
 #' To make things a little easier, the template
-#' used by [proj_workflow_use_rmd()] includes a call to
+#' used by [use_qmd()] includes a call to
 #' `proj_create_dir_target()`, with the `name` argument populated.
 #'
-#' @inheritParams proj_workflow_use_rmd
+#' @param name `character` name of the workflow component.
 #' @param clean `logical` indicates to start with a clean (empty) directory.
 #'
 #' @return Invisible NULL, called for side effects.
@@ -48,9 +48,9 @@ proj_create_dir_target <- function(name, clean = TRUE) {
 #' Create path-generating functions
 #'
 #' @description
-#' This workflow philosophy relies on RMarkdown files being run in a defined
-#' sequence. It follows that an RMarkdown file should not read from the data
-#' written by another RMarkdown file written *later* in the sequence. These
+#' This workflow philosophy relies on Quarto files being run in a defined
+#' sequence. It follows that a Quarto file should not read from the data
+#' written by another Quarto file written *later* in the sequence. These
 #' functions help you implement this idea.
 #'
 #' These functions are
@@ -59,14 +59,14 @@ proj_create_dir_target <- function(name, clean = TRUE) {
 #' to access paths.
 #'
 #' To make things a little easier, the template used by
-#' [proj_workflow_use_rmd()] includes a calls to `proj_path_source()`
+#' [use_qmd()] includes calls to `proj_path_source()`
 #' and `proj_path_target()`, with the `name` argument populated.
 #'
 #' @details
-#' Each RMarkdown file in the sequence has its own target directory, created
+#' Each Quarto file in the sequence has its own target directory, created
 #' using [proj_create_dir_target()]. Once a target directory is created, use
 #' these functions to **create functions** to access your target directory,
-#' or previous RMarkdown files' target directories (as sources).
+#' or previous Quarto files' target directories (as sources).
 #'
 #' For example, use `proj_path_target()` to create a path-generating function
 #' that uses your target directory. Whenever you need to provide a path to a
@@ -75,10 +75,10 @@ proj_create_dir_target <- function(name, clean = TRUE) {
 #'
 #' Similarly, you can use `proj_path_source()` to create a path-generating
 #' function for your source directories, which **must** be earlier in the
-#' workflow than your current RMarkdown file. The path-generating function
-#' ckecks that the source directory is, in fact, earlier in the workflow.
+#' workflow than your current Quarto file. The path-generating function
+#' checks that the source directory is, in fact, earlier in the workflow.
 #'
-#' @inheritParams proj_workflow_use_rmd
+#' @param name `character` name of the workflow component.
 #'
 #' @return `function` that acts like [here::here()],
 #'   returning a `character` path.
@@ -169,18 +169,9 @@ proj_dir_info <- function(path = ".", tz = "UTC",
   withr::local_dir(path)
   info <- fs::dir_info(path = ".", ...)
 
-  # predicate function (is this a datetime?)
-  is_POSIXct <- function(x) {
-    inherits(x, "POSIXct")
-  }
-
-  set_tz <- function(x, tz) {
-    attr(x, "tzone") <- tz
-    x
-  }
-
   # set the timezone on all datetime columns, restore tibble
-  info <- purrr::map_if(info, is_POSIXct, set_tz, tz = tz)
+  is_POSIXct <- function(x) inherits(x, "POSIXct")
+  info[] <- lapply(info, function(col) if (is_POSIXct(col)) { attr(col, "tzone") <- tz; col } else col)
   info <- tibble::as_tibble(info)
 
   # select only the requested columns

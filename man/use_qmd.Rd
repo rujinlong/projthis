@@ -6,7 +6,7 @@
 \usage{
 use_qmd(
   name,
-  path_proj = NULL,
+  path_proj = "analyses",
   open = rlang::is_interactive(),
   ignore = FALSE
 )
@@ -15,7 +15,7 @@ use_qmd(
 \item{name}{\code{character} name of the workflow component.}
 
 \item{path_proj}{\code{character} path to workflow directory,
-relative to the project directory.}
+relative to the project directory. Defaults to \code{"analyses"}.}
 
 \item{open}{\code{logical} indicates to open the file for interactive editing.}
 
@@ -25,12 +25,13 @@ relative to the project directory.}
 Invisible \code{NULL}, called for side effects.
 }
 \description{
-Use opinionated qmd template
+Use this function to create a new, templated Quarto file in a workflow
+directory.
 }
 \examples{
 # not run because it creates side effects
 \dontrun{
   # creates file `01-clean.qmd`
-  proj_workflow_use_rmd("01-clean")
+  use_qmd("01-clean")
 }
 }

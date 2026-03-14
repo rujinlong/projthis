@@ -6,7 +6,7 @@
       # A tibble: 3 x 2
         path         type     
         <fs::path>   <fct>    
-      1 01-clean.Rmd file     
-      2 README.Rmd   file     
+      1 01-clean.qmd file     
+      2 README.md    file     
       3 data         directory
 

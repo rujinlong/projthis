@@ -24,9 +24,9 @@ if (basename(getwd()) != wd) {
   setwd(here::here(wd))
 }
 here::i_am(paste0(params$name, ".qmd"), uuid = "{{{uuid}}}")
-projthis::proj_create_dir_target(params$name, clean = FALSE)
-path_target <- projthis::proj_path_target(params$name)
-path_source <- projthis::proj_path_source(params$name)
+qproj::proj_create_dir_target(params$name, clean = FALSE)
+path_target <- qproj::proj_path_target(params$name)
+path_source <- qproj::proj_path_source(params$name)
 path_raw <- path_source("00-raw")
 path_resource <- here::here(path_raw, "d00-resource")
 path_data <- here::here(path_raw, paste0("d", params$name))
@@ -77,6 +77,6 @@ These files have been written to the target directory, `r paste0("data/", params
 
 ```{r}
 #| label: list-files-target
-projthis::proj_dir_info(path_target(), tz = "CET") %>% knitr::kable()
+qproj::proj_dir_info(path_target(), tz = "CET") %>% knitr::kable()
 ```
 

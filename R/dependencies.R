@@ -3,10 +3,10 @@
 #' @description
 #' This uses [renv::dependencies()], which scans your project directory for
 #' package-dependency declarations. It compares packages detected in the code
-#' with those declared in the `DESCRIPTION` to determine
-#' missing and extra package-dependency declarations.
+#' with those declared in the `DESCRIPTION` to determine missing and extra
+#' package-dependency declarations.
 #'
-#' By default, `proj_upate_deps()` will not remove extra package-dependency
+#' By default, `proj_update_deps()` will not remove extra package-dependency
 #' declarations; you can change this by using `remove_extra = TRUE`.
 #'
 #' \describe{
@@ -16,11 +16,11 @@
 #' }
 #'
 #' @param path `character`, path to the project directory. If your current
-#' working-directory in is in the project, the default will do the right thing.
+#' working-directory is in the project, the default will do the right thing.
 #' @param remove_extra `logical`, indicates to remove dependency-declarations
 #'  that [renv::dependencies()] can't find being used.
 #'
-#' @return Invisible `NULL`, called for side effects.
+#' @return Invisible `NULL` or list, called for side effects.
 #'
 #' @examples
 #' # not run because it produces side effects
@@ -35,35 +35,25 @@
 #' @export
 #'
 proj_check_deps <- function(path = usethis::proj_get()) {
-
   diff <- check_deps(path)
 
-  str_missing <-
-    glue::glue_collapse(crayon::blue(diff[["missing"]]), sep = ", ")
-  str_extra <-
-    glue::glue_collapse(crayon::blue(diff[["extra"]]), sep = ", ")
-
-  has_missing <- as.logical(length(diff[["missing"]]))
-  has_extra <- as.logical(length(diff[["extra"]]))
-
-  if (has_missing) {
-    pui_oops(c("Missing dependencies in DESCRIPTION:", "   {str_missing}"))
+  if (length(diff$missing) > 0) {
+    cli::cli_alert_danger("Missing from DESCRIPTION: {.pkg {diff$missing}}")
   } else {
-    pui_done("No dependencies missing in DESCRIPTION.")
+    cli::cli_alert_success("No missing dependencies.")
   }
 
-  if (has_extra) {
-    pui_info(c("Extra dependencies in DESCRIPTION:", "   {str_extra}"))
+  if (length(diff$extra) > 0) {
+    cli::cli_alert_info("Extra in DESCRIPTION (not used): {.pkg {diff$extra}}")
   } else {
-    pui_done("No extra dependencies in DESCRIPTION.")
+    cli::cli_alert_success("No extra dependencies.")
   }
 
-  if (has_missing || has_extra) {
-    code <- usethis::ui_code("proj_update_deps()")
-    pui_todo("To update dependencies in DESCRIPTION automatically, run {code}.")
+  if (length(diff$missing) > 0 || length(diff$extra) > 0) {
+    cli::cli_alert_warning("Run {.fn proj_update_deps} to update DESCRIPTION automatically.")
   }
 
-  invisible(NULL)
+  invisible(diff)
 }
 
 
@@ -71,52 +61,35 @@ proj_check_deps <- function(path = usethis::proj_get()) {
 #' @export
 #'
 proj_update_deps <- function(path = usethis::proj_get(), remove_extra = FALSE) {
-
   diff <- check_deps(path)
 
-  str_missing <-
-    glue::glue_collapse(crayon::green(diff[["missing"]]), sep = ", ")
-  str_extra <-
-    glue::glue_collapse(crayon::green(diff[["extra"]]), sep = ", ")
-
-  has_missing <- as.logical(length(diff[["missing"]]))
-  has_extra <- as.logical(length(diff[["extra"]]))
-
-  if (has_missing) {
-    purrr::walk(diff[["missing"]], desc::desc_set_dep, type = "Imports")
-    pui_done(
-      c("Added missing dependencies to DESCRIPTION:", "    {str_missing}")
-    )
+  if (length(diff$missing) > 0) {
+    for (pkg in diff$missing) desc::desc_set_dep(pkg, type = "Imports", file = fs::path(path, "DESCRIPTION"))
+    cli::cli_alert_success("Added to DESCRIPTION: {.pkg {diff$missing}}")
   } else {
-    pui_done("No dependencies missing from DESCRIPTION.")
+    cli::cli_alert_success("No missing dependencies.")
   }
 
-  if (has_extra) {
+  if (length(diff$extra) > 0) {
     if (remove_extra) {
-      purrr::walk(diff[["extra"]], desc::desc_del_dep)
-      pui_done(
-        c("Removed extra dependencies from DESCRIPTION:", "    {str_extra}")
-      )
+      for (pkg in diff$extra) desc::desc_del_dep(pkg, file = fs::path(path, "DESCRIPTION"))
+      cli::cli_alert_success("Removed from DESCRIPTION: {.pkg {diff$extra}}")
     } else {
-      pui_info(
-        c("Extra dependencies in DESCRIPTION (not removed):", "   {str_extra}")
-      )
+      cli::cli_alert_info("Extra in DESCRIPTION (not removed): {.pkg {diff$extra}}")
     }
   } else {
-    pui_done("No extra dependencies in DESCRIPTION.")
+    cli::cli_alert_success("No extra dependencies.")
   }
 
+  invisible(NULL)
 }
 
 #' Install dependencies
 #'
-#' Use to install the project's package dependencies.
-#' This is a thin wrapper to [remotes::install_deps()]; by default, it installs
-#' all "Depends", "Imports", "Suggests", and "LinkingTo".
+#' Use to install the project's package dependencies from `DESCRIPTION`
+#' using [pak::local_install_deps()].
 #'
 #' @inheritParams proj_check_deps
-#' @inheritParams remotes::install_deps
-#' @param ... other arguments passed to [remotes::install_deps()].
 #'
 #' @return Invisible `NULL`, called for side effects.
 #' @examples
@@ -126,39 +99,9 @@ proj_update_deps <- function(path = usethis::proj_get(), remove_extra = FALSE) {
 #' }
 #' @export
 #'
-proj_install_deps <- function(path = usethis::proj_get(), dependencies = TRUE,
-                              ...) {
-
-  # not tested because it could change the R installation
-  remotes::install_deps(pkgdir = path, dependencies = dependencies, ...)
-
-  invisible(NULL)
-}
-
-#' Refresh dependencies
-#'
-#' This calls `proj_update_deps()`, then `proj_install_deps()`; use to refresh
-#' your package dependencies.
-#'
-#' @inheritParams proj_check_deps
-#' @inheritParams proj_install_deps
-#'
-#' @return Invisible `NULL`, called for side effects.
-#' @examples
-#' # not run because it produces side effects
-#' if (FALSE) {
-#'   proj_refresh_deps()
-#' }
-#' @export
-#'
-proj_refresh_deps <- function(path = usethis::proj_get(), remove_extra = FALSE,
-                              dependencies = TRUE, ...) {
-
-  # not tested because it could change the R installation
-  proj_update_deps(path = path, remove_extra = remove_extra)
-
-  proj_install_deps(path = path, dependencies = dependencies, ...)
-
+proj_install_deps <- function(path = usethis::proj_get()) {
+  cli::cli_alert_info("Installing dependencies from DESCRIPTION using pak...")
+  pak::local_install_deps(root = path)
   invisible(NULL)
 }
 
@@ -171,15 +114,11 @@ check_deps <- function(path = usethis::proj_get()) {
   x <- utils::capture.output(deps <- renv::dependencies(path = path))
 
   # split according to DESCRIPTION
-  detected <- deps[deps[["Source"]] != file_desc, "Package", drop = TRUE]
-  detected <- unique(detected)
+  detected <- unique(deps[deps[["Source"]] != file_desc, "Package", drop = TRUE])
+  declared <- unique(deps[deps[["Source"]] == file_desc, "Package", drop = TRUE])
 
-  declared <- deps[deps[["Source"]] == file_desc, "Package", drop = TRUE]
-  declared <- unique(declared)
-
-  missing <- detected[!(detected %in% declared)]
-  extra <- declared[!(declared %in% detected)]
-
-  # empty elements will be character(0)
-  list(missing = missing, extra = extra)
+  list(
+    missing = detected[!(detected %in% declared)],
+    extra   = declared[!(declared %in% detected)]
+  )
 }
