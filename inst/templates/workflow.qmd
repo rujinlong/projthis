@@ -17,6 +17,8 @@ params <- list(name = "{{{name}}}")
 ```{r}
 #| label: setup
 #| include: false
+#| message: false
+#| warning: false
 wd <- "{{{path_proj}}}"
 if (basename(getwd()) != wd) {
   setwd(here::here(wd))
@@ -27,12 +29,25 @@ qproj::proj_create_dir_target(params$name, clean = FALSE)
 # convenience helpers
 path_target <- qproj::proj_path_target(params$name)
 path_source <- qproj::proj_path_source(params$name)
+path_raw <- path_source("00-raw")
+path_resource <- here::here(path_raw, "d00-resource")
+path_data <- here::here(path_raw, paste0("d", params$name))
+dir.create(path_raw, recursive = TRUE, showWarnings = FALSE)
+dir.create(path_data, recursive = TRUE, showWarnings = FALSE)
+dir.create(path_resource, recursive = TRUE, showWarnings = FALSE)
 ```
 
 ```{r}
 #| label: packages
-# add the packages you need, for example:
-# library(dplyr)
+#| message: false
+#| warning: false
+suppressPackageStartupMessages({
+  library(here)
+  library(conflicted)
+  library(tidyverse)
+  library(data.table)
+  devtools::load_all()
+})
 ```
 
 ## Workflow tips

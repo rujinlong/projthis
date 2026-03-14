@@ -87,9 +87,18 @@
       "`fields` must be a named list"
     )
 
+    expect_false(fs::dir_exists(fs::path(tempdir, "proj-04")))
+
+    file_path <- fs::path(tempdir, "proj-file")
+    fs::file_create(file_path)
+
+    expect_error(
+      proj_create(path = file_path),
+      "already exists and is not a directory"
+    )
+
   })
 
 }
-
 
 

@@ -26,6 +26,10 @@
 #'
 proj_create <- function(path, fields = list()) {
 
+  if (length(fields) > 0 && (is.null(names(fields)) || any(names(fields) == ""))) {
+    cli::cli_abort("`fields` must be a named list.")
+  }
+
   if (fs::file_exists(path) && !fs::is_dir(path)) {
     cli::cli_abort("{.path {path}} already exists and is not a directory.")
   }
@@ -39,11 +43,7 @@ proj_create <- function(path, fields = list()) {
     fs::dir_create(path)
   }
 
-  if (length(fields) > 0 && (is.null(names(fields)) || any(names(fields) == ""))) {
-    cli::cli_abort("`fields` must be a named list.")
-  }
-
-  # Create project directory
+  # Path to DESCRIPTION file
   desc_path <- fs::path(path, "DESCRIPTION")
 
   # Set up DESCRIPTION using desc package
