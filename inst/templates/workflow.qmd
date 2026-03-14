@@ -11,13 +11,13 @@ params:
 #| label: params
 #| eval: !expr interactive()
 #| include: false
-params = list(name = "{{{name}}}")
+params <- list(name = "{{{name}}}")
 ```
 
 ```{r}
 #| label: setup
-#| message: false
 #| include: false
+#| message: false
 #| warning: false
 wd <- "{{{path_proj}}}"
 if (basename(getwd()) != wd) {
@@ -25,6 +25,8 @@ if (basename(getwd()) != wd) {
 }
 here::i_am(paste0(params$name, ".qmd"), uuid = "{{{uuid}}}")
 qproj::proj_create_dir_target(params$name, clean = FALSE)
+
+# convenience helpers
 path_target <- qproj::proj_path_target(params$name)
 path_source <- qproj::proj_path_source(params$name)
 path_raw <- path_source("00-raw")
@@ -48,6 +50,12 @@ suppressPackageStartupMessages({
 })
 ```
 
+## Workflow tips
+
+- Write results to your own directory: `path_target("my-file.csv")`.
+- Read earlier outputs (only those that run before this file): `path_source("00-import", "raw.csv")`.
+- Keep each file responsible for its own data directory to avoid accidental overwrites.
+
 ## Tasks
 
 This section is designated for your workflow implementation. **Please write all your analysis and processing code here.**
@@ -65,10 +73,8 @@ This is an example structure to get you started. You can modify it as per your n
 ```{r}
 #| label: data-import
 #| cache: true
-#| message: false
-#| warning: false
 
-# Your data improt code here
+# Your data import code here
 ```
 
 ## Files written
@@ -77,6 +83,5 @@ These files have been written to the target directory, `r paste0("data/", params
 
 ```{r}
 #| label: list-files-target
-qproj::proj_dir_info(path_target(), tz = "CET") %>% knitr::kable()
+knitr::kable(qproj::proj_dir_info(path_target(), tz = "CET"))
 ```
-
